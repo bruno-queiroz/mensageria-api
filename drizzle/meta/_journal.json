@@ -29,6 +29,13 @@
       "when": 1709810180784,
       "tag": "0003_sweet_shinko_yamashiro",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1710337083142,
+      "tag": "0004_perpetual_hannibal_king",
+      "breakpoints": true
     }
   ]
 }
