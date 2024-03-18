@@ -50,6 +50,13 @@
       "when": 1710769201450,
       "tag": "0006_perpetual_stranger",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1710769471186,
+      "tag": "0007_slimy_bloodaxe",
+      "breakpoints": true
     }
   ]
 }
