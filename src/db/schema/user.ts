@@ -1,10 +1,14 @@
-import { text, pgTable, uuid, timestamp } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
+import { text, pgTable, timestamp } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
-  id: uuid("id").primaryKey().defaultRandom(),
+  id: text("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   name: text("name").notNull(),
-  photo: text("photo"),
+  image: text("image"),
   email: text("email").notNull(),
+  emailVerified: timestamp("emailVerified", { mode: "date" }),
   password: text("password").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
