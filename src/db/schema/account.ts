@@ -2,7 +2,7 @@ import { text, pgTable, integer, primaryKey } from "drizzle-orm/pg-core";
 import { user } from "./user";
 import type { AdapterAccount } from "@auth/core/adapters";
 
-export const accounts = pgTable(
+export const account = pgTable(
   "account",
   {
     userId: text("userId")
