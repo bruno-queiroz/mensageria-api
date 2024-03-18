@@ -36,6 +36,20 @@
       "when": 1710337083142,
       "tag": "0004_perpetual_hannibal_king",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1710769077422,
+      "tag": "0005_misty_mojo",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1710769201450,
+      "tag": "0006_perpetual_stranger",
+      "breakpoints": true
     }
   ]
 }
