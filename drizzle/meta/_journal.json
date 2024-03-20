@@ -71,6 +71,13 @@
       "when": 1710769895957,
       "tag": "0009_many_blindfold",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1710790821560,
+      "tag": "0010_yielding_green_goblin",
+      "breakpoints": true
     }
   ]
 }
