@@ -4,7 +4,7 @@ export const SignUpUserSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
   password: z.string(),
-  photo: z.string().optional(),
+  image: z.string().optional(),
   sessionToken: z.string().min(180),
 });
 
