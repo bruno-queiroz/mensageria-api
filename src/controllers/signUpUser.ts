@@ -4,9 +4,13 @@ import { signUpUserService } from "../services/signUpUser";
 
 export const signUpUserController = async (req: Request, res: Response) => {
   try {
-    const userBody = SignUpUserSchema.parse(req.body);
-
-    const newUser = await signUpUserService(userBody);
+    const { name, email, password, sessionToken } = SignUpUserSchema.parse(
+      req.body
+    );
+    const newUser = await signUpUserService(
+      { name, email, password },
+      sessionToken
+    );
 
     res.status(201).json({
       data: newUser,
