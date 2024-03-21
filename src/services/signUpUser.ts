@@ -1,24 +1,22 @@
-import { randomBytes } from "crypto";
-import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from "uuid";
 
-import { UserInputDTO } from "../validators/SignUpUser";
+import { SignUpUserDTO } from "../validators/SignUpUser";
 import { userRepository } from "../repositories/user";
+import { hashPassword } from "../utils/hashPassword";
+import { setSessionExpireDate } from "../utils/setSessionExpireDate";
 
-export const signUpUserService = async (user: UserInputDTO) => {
-  let hashedPassword = "";
-  const saltRounds = 10;
+export const signUpUserService = async (
+  user: SignUpUserDTO,
+  sessionToken: string
+) => {
+  const userWithHashedPw = await hashPassword(user);
+  const expireDate = setSessionExpireDate({ days: 30 });
+  const newUserId = uuidv4();
 
-  if (user.password) {
-    hashedPassword = await bcrypt.hash(user.password, saltRounds);
-  } else {
-    hashedPassword = await bcrypt.hash(
-      randomBytes(32).toString("hex"),
-      saltRounds
-    );
-  }
-
-  user.password = hashedPassword;
-
-  const newUser = await userRepository.signUpUser(user as any);
+  const newUser = await userRepository.signUpUser(
+    { id: newUserId, ...userWithHashedPw },
+    sessionToken,
+    expireDate
+  );
   return newUser;
 };
