@@ -5,7 +5,8 @@ export const SignUpUserSchema = z.object({
   email: z.string().email(),
   password: z.string(),
   image: z.string().optional(),
-  sessionToken: z.string().min(180),
+  sessionToken: z.string().min(30),
 });
 
-export type UserInputDTO = z.infer<typeof SignUpUserSchema>;
+type SignUpUserSchemaType = z.infer<typeof SignUpUserSchema>;
+export type SignUpUserDTO = Omit<SignUpUserSchemaType, "sessionToken">;
