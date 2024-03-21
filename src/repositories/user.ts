@@ -3,18 +3,32 @@ import { db } from "../app";
 import { user } from "../db/schema/user";
 import { friendship } from "../db/schema/friendship";
 import { unionAll } from "drizzle-orm/pg-core";
-
-type NewUser = typeof user.$inferInsert;
+import { session } from "../db/schema/session";
+import { SignUpUserDTO } from "../validators/SignUpUser";
 
 export const userRepository = {
-  async signUpUser(newUser: NewUser) {
-    return await db.insert(user).values(newUser).returning({
-      id: user.name,
-      name: user.name,
-      email: user.email,
-      photo: user.image,
-      createdAt: user.createdAt,
+  async signUpUser(
+    newUser: SignUpUserDTO & { id: string },
+    sessionToken: string,
+    expireDate: Date
+  ) {
+    const userData = await db.transaction(async (tx) => {
+      const [userData] = await tx.insert(user).values(newUser).returning({
+        id: user.name,
+        name: user.name,
+        email: user.email,
+        image: user.image,
+        createdAt: user.createdAt,
+      });
+
+      await tx
+        .insert(session)
+        .values({ sessionToken, expires: expireDate, userId: newUser.id });
+
+      return userData;
     });
+
+    return userData;
   },
   async findFriend(userId: string, query: string) {
     const invitee = db
