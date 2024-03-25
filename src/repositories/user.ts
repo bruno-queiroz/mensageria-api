@@ -49,7 +49,7 @@ export const userRepository = {
       .select({
         id: user.id,
         name: user.name,
-        photo: user.image,
+        image: user.image,
       })
       .from(user)
       .where(
