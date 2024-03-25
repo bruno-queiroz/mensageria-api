@@ -56,4 +56,10 @@ export const userRepository = {
         and(like(user.name, query + "%"), notInArray(user.id, userFriendsQuery))
       );
   },
+  async findUserByEmail(email: string) {
+    return await db
+      .select({ encryptedPw: user.password, userId: user.id })
+      .from(user)
+      .where(eq(user.email, email));
+  },
 };
