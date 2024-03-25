@@ -7,5 +7,4 @@ export const SignUpUserSchema = z.object({
   image: z.string().optional(),
 });
 
-type SignUpUserSchemaType = z.infer<typeof SignUpUserSchema>;
-export type SignUpUserDTO = Omit<SignUpUserSchemaType, "sessionToken">;
+export type SignUpUserDTO = z.infer<typeof SignUpUserSchema>;
