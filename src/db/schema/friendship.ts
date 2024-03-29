@@ -4,13 +4,13 @@ import { user } from "./user";
 export const friendship = pgTable(
   "friendship",
   {
-    user_inviter: text("user_inviter").references(() => user.id),
-    user_invitee: text("user_invitee").references(() => user.id),
+    userInviter: text("user_inviter").references(() => user.id),
+    userInvitee: text("user_invitee").references(() => user.id),
     createdAt: timestamp("created_at").defaultNow(),
   },
   (table) => {
     return {
-      pk: primaryKey({ columns: [table.user_inviter, table.user_invitee] }),
+      pk: primaryKey({ columns: [table.userInviter, table.userInvitee] }),
     };
   }
 );

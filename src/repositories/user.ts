@@ -34,14 +34,14 @@ export const userRepository = {
     const invitee = db
       .select({ id: user.id })
       .from(friendship)
-      .innerJoin(user, eq(friendship.user_invitee, user.id))
-      .where(eq(friendship.user_inviter, userId));
+      .innerJoin(user, eq(friendship.userInvitee, user.id))
+      .where(eq(friendship.userInviter, userId));
 
     const inviter = db
       .select({ id: user.id })
       .from(friendship)
-      .innerJoin(user, eq(friendship.user_inviter, user.id))
-      .where(eq(friendship.user_invitee, userId));
+      .innerJoin(user, eq(friendship.userInviter, user.id))
+      .where(eq(friendship.userInvitee, userId));
 
     const userFriendsQuery = unionAll(invitee, inviter);
 
