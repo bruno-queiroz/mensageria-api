@@ -78,6 +78,13 @@
       "when": 1710790821560,
       "tag": "0010_yielding_green_goblin",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "5",
+      "when": 1711719169130,
+      "tag": "0011_remarkable_sunspot",
+      "breakpoints": true
     }
   ]
 }
