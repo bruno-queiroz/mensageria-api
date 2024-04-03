@@ -1,0 +1,1 @@
+ALTER TABLE "friendship_request" ADD CONSTRAINT "friendship_request_from_user_to_user_pk" PRIMARY KEY("from_user","to_user");
