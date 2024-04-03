@@ -16,6 +16,11 @@ export const signUpUserController = async (req: Request, res: Response) => {
         expires: expireDate,
         secure: true,
       })
+      .cookie("mensageria-user-id", newUser.id, {
+        httpOnly: false,
+        expires: expireDate,
+        secure: true,
+      })
       .json({
         data: newUser,
         message: "User signed up successfully.",
