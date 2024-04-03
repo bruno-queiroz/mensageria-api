@@ -19,6 +19,11 @@ export const signInUserController = async (req: Request, res: Response) => {
         expires: session?.expires,
         secure: true,
       })
+      .cookie("mensageria-user-id", session?.userId, {
+        httpOnly: false,
+        expires: session?.expires,
+        secure: true,
+      })
       .json({
         message: "User signed in successfully.",
         isOk: true,
