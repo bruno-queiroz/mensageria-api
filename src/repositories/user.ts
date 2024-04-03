@@ -1,10 +1,11 @@
-import { and, eq, like, notInArray } from "drizzle-orm";
+import { and, eq, like, not, notInArray, or } from "drizzle-orm";
 import { db } from "../app";
 import { user } from "../db/schema/user";
 import { friendship } from "../db/schema/friendship";
 import { unionAll } from "drizzle-orm/pg-core";
 import { session } from "../db/schema/session";
 import { SignUpUserDTO } from "../validators/SignUpUser";
+import { friendshipRequest } from "../db/schema/friendshipRequest";
 
 export const userRepository = {
   async signUpUser(
@@ -45,15 +46,34 @@ export const userRepository = {
 
     const userFriendsQuery = unionAll(invitee, inviter);
 
+    const sq = db
+      .select()
+      .from(friendshipRequest)
+      .where(
+        or(
+          eq(friendshipRequest.toUser, userId),
+          eq(friendshipRequest.fromUser, userId)
+        )
+      )
+      .as("sq");
+
     return await db
       .select({
         id: user.id,
         name: user.name,
         image: user.image,
+        fromUser: sq.fromUser,
+        toUser: sq.toUser,
+        isAccept: sq.isAccept,
       })
       .from(user)
+      .leftJoin(sq, or(eq(sq.toUser, user.id), eq(sq.fromUser, user.id)))
       .where(
-        and(like(user.name, query + "%"), notInArray(user.id, userFriendsQuery))
+        and(
+          like(user.name, query + "%"),
+          notInArray(user.id, userFriendsQuery),
+          not(eq(user.id, userId))
+        )
       );
   },
   async findUserByEmail(email: string) {
