@@ -10,7 +10,7 @@ export const acceptFriendshipRequestController = async (
   await acceptFriendshipRequestService(request);
 
   try {
-    res.status(200).json({
+    res.status(201).json({
       message: "The request was accepted successfully.",
       isOk: true,
     });
