@@ -15,7 +15,7 @@ export const userRepository = {
   ) {
     const userData = await db.transaction(async (tx) => {
       const [userData] = await tx.insert(user).values(newUser).returning({
-        id: user.name,
+        id: user.id,
         name: user.name,
         email: user.email,
         image: user.image,
