@@ -4,5 +4,5 @@ import { FriendshipRequestDto } from "../validators/FriendshipRequest";
 export const acceptFriendshipRequestService = async (
   request: FriendshipRequestDto
 ) => {
-  return friendshipRequestRepository.accept(request);
+  return await friendshipRequestRepository.accept(request);
 };
