@@ -43,4 +43,14 @@ export const friendshipRequestRepository = {
         .values({ userInvitee: toUser, userInviter: fromUser });
     });
   },
+  async reject({ fromUser, toUser }: FriendshipRequestDto) {
+    await db
+      .delete(friendshipRequest)
+      .where(
+        and(
+          eq(friendshipRequest.fromUser, fromUser),
+          eq(friendshipRequest.toUser, toUser)
+        )
+      );
+  },
 };
