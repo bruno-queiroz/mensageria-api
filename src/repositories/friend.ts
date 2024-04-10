@@ -9,18 +9,18 @@ export const friendRepository = {
   async getFriends(myId: string, friendId: string) {
     return await db.select().from(friendship);
   },
-  async findFriend(userId: string, query: string) {
+  async findFriend(myId: string, query: string) {
     const invitee = db
       .select({ id: user.id })
       .from(friendship)
       .innerJoin(user, eq(friendship.userInvitee, user.id))
-      .where(eq(friendship.userInviter, userId));
+      .where(eq(friendship.userInviter, myId));
 
     const inviter = db
       .select({ id: user.id })
       .from(friendship)
       .innerJoin(user, eq(friendship.userInviter, user.id))
-      .where(eq(friendship.userInvitee, userId));
+      .where(eq(friendship.userInvitee, myId));
 
     const userFriendsQuery = unionAll(invitee, inviter);
 
@@ -29,8 +29,8 @@ export const friendRepository = {
       .from(friendshipRequest)
       .where(
         or(
-          eq(friendshipRequest.toUser, userId),
-          eq(friendshipRequest.fromUser, userId)
+          eq(friendshipRequest.toUser, myId),
+          eq(friendshipRequest.fromUser, myId)
         )
       )
       .as("sq");
@@ -50,7 +50,7 @@ export const friendRepository = {
         and(
           like(user.name, query + "%"),
           notInArray(user.id, userFriendsQuery),
-          not(eq(user.id, userId))
+          not(eq(user.id, myId))
         )
       );
   },
