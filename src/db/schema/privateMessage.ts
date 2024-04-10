@@ -7,7 +7,7 @@ export const privateMessage = pgTable(
     id: text("id").primaryKey(),
     toUser: text("to_user").references(() => user.id),
     fromUser: text("from_user").references(() => user.id),
-    message: text("message"),
+    message: text("message").notNull(),
     isSeen: boolean("is_seen").default(false),
     sentAt: timestamp("sent_at").defaultNow(),
   },
