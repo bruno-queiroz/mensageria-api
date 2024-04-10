@@ -1,7 +1,7 @@
-import { userRepository } from "../repositories/user";
+import { friendRepository } from "../repositories/friend";
 
 export const findFriendService = async (userId: string, query: string) => {
-  const users = await userRepository.findFriend(userId, query);
+  const users = await friendRepository.findFriend(userId, query);
 
   return users;
 };
