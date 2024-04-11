@@ -6,8 +6,20 @@ import { unionAll } from "drizzle-orm/pg-core";
 import { friendshipRequest } from "../db/schema/friendshipRequest";
 
 export const friendRepository = {
-  async getFriends(myId: string, friendId: string) {
-    return await db.select().from(friendship);
+  async getFriends(myId: string) {
+    const invitee = db
+      .select({ id: user.id, name: user.name, image: user.image })
+      .from(friendship)
+      .innerJoin(user, eq(friendship.userInvitee, user.id))
+      .where(eq(friendship.userInviter, myId));
+
+    const inviter = db
+      .select({ id: user.id, name: user.name, image: user.image })
+      .from(friendship)
+      .innerJoin(user, eq(friendship.userInviter, user.id))
+      .where(eq(friendship.userInvitee, myId));
+
+    return await unionAll(invitee, inviter);
   },
   async findFriend(myId: string, query: string) {
     const invitee = db
