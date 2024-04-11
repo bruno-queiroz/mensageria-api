@@ -1,0 +1,1 @@
+ALTER TABLE "private_message" RENAME COLUMN "id" TO "conversation_id";
