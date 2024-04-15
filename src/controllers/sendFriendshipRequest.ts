@@ -14,7 +14,7 @@ export const sendFriendshipRequestController = async (
       .status(201)
       .json({ message: "Friendship request sent successfully.", isOk: true });
   } catch (error) {
-    console.error("Error sending friendship request", error);
+    console.error("Error sending friendship request.", error);
 
     res.status(500).json({
       message: "Something went wrong sending friendship request.",
