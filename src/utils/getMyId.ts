@@ -1,4 +1,7 @@
-export const getMyId = (cookies: string | undefined, key: string) => {
+export const getMyId = (
+  cookies: string | undefined,
+  key: string
+): string | undefined => {
   const cookie = cookies?.split(";").find((cookie) => {
     const [cookieKey] = cookie.split("=");
     if (key === cookieKey.trim()) return cookie;
