@@ -4,7 +4,7 @@ import { user } from "./user";
 export const privateMessage = pgTable(
   "private_message",
   {
-    conversationId: text("conversation_id").primaryKey(),
+    conversationId: text("conversation_id"),
     toUser: text("to_user").references(() => user.id),
     fromUser: text("from_user").references(() => user.id),
     message: text("message").notNull(),
