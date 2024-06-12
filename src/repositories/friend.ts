@@ -25,7 +25,12 @@ export const friendRepository = {
         name: user.name,
         image: user.image,
         message_amount: count(
-          sql`CASE WHEN "private_message".is_seen = \'f\' THEN 1 ELSE NULL END `
+          sql`CASE
+                  WHEN "private_message".is_seen = \'f\'
+                      AND "private_message".from_user != ${myId} THEN 1
+                  ELSE NULL
+              END
+            `
         ),
         last_message: max(privateMessage.message),
       })
