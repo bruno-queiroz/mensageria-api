@@ -5,6 +5,6 @@ import { getMessageController } from "../controllers/getMessage";
 const router = Router();
 
 router.post("/", sendMessageController);
-router.get("/", getMessageController);
+router.patch("/", getMessageController);
 
 export default router;
