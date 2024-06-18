@@ -19,23 +19,25 @@ import { privateMessage } from "../db/schema/privateMessage";
 
 export const friendRepository = {
   async getFriends(myId: string) {
-    return await db
+    const subQuery = db
       .select({
         id: user.id,
         name: user.name,
         image: user.image,
         message_amount: count(
           sql`CASE
-                  WHEN "private_message".is_seen = \'f\'
-                      AND "private_message".from_user != ${myId} THEN 1
-                  ELSE NULL
-              END
-            `
+                WHEN "private_message".is_seen = \'f\'
+                    AND "private_message".from_user != ${myId} THEN 1
+                ELSE NULL
+            END
+          `
+        ).as("message_amount"),
+        last_message: max(privateMessage.message).as("last_message"),
+        last_message_sent_at: max(privateMessage.sentAt).as(
+          "last_message_sent_at"
         ),
-        last_message: max(privateMessage.message),
       })
       .from(user)
-      .orderBy(desc(max(privateMessage.sentAt)))
       .innerJoin(
         friendship,
         or(
@@ -62,7 +64,24 @@ export const friendRepository = {
           )
         )
       )
-      .groupBy(sql`${user.id}`);
+      .groupBy(sql`${user.id}`)
+      .as("sq");
+
+    return await db
+      .select({
+        id: subQuery.id,
+        name: subQuery.name,
+        image: subQuery.image,
+        message_amount: subQuery.message_amount,
+        last_message: privateMessage.message,
+        last_message_sent_at: subQuery.last_message_sent_at,
+      })
+      .from(subQuery)
+      .orderBy(desc(subQuery.last_message_sent_at))
+      .innerJoin(
+        privateMessage,
+        eq(subQuery.last_message_sent_at, privateMessage.sentAt)
+      );
   },
   async findFriend(myId: string, query: string) {
     const invitee = db
