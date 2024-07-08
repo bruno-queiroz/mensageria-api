@@ -1,4 +1,4 @@
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { db } from "../app";
 import { privateMessage } from "../db/schema/privateMessage";
 import { SendMessageDto } from "../validators/SendMessage";
@@ -10,6 +10,16 @@ export const messageRepository = {
   },
   async get(conversationId: string, toUserId: string) {
     return await db.transaction(async (tx) => {
+      const queryResult = await tx
+        .update(privateMessage)
+        .set({ isSeen: true })
+        .where(
+          and(
+            eq(privateMessage.fromUser, toUserId),
+            eq(privateMessage.isSeen, false)
+          )
+        );
+
       const messages = await tx
         .select({
           toUser: privateMessage.toUser,
@@ -32,7 +42,11 @@ export const messageRepository = {
         .from(user)
         .where(eq(user.id, toUserId));
 
-      return { user: fromUser[0], messages };
+      return {
+        user: fromUser[0],
+        messages,
+        isRowModified: !!queryResult.rowCount,
+      };
     });
   },
 };
