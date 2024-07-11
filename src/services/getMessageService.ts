@@ -5,5 +5,5 @@ import { GetMessageDto } from "../validators/GetMessage";
 export const getMessageService = async (data: GetMessageDto) => {
   const conversationId = getConversationId(data);
 
-  return await messageRepository.get(conversationId, data.toUser);
+  return await messageRepository.get(conversationId, data.toUser, data.date);
 };
