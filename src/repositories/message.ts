@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, lt } from "drizzle-orm";
 import { db } from "../app";
 import { privateMessage } from "../db/schema/privateMessage";
 import { SendMessageDto } from "../validators/SendMessage";
@@ -8,7 +8,7 @@ export const messageRepository = {
   async send(message: SendMessageDto & { conversationId: string }) {
     return await db.insert(privateMessage).values(message);
   },
-  async get(conversationId: string, toUserId: string) {
+  async get(conversationId: string, toUserId: string, date: string) {
     return await db.transaction(async (tx) => {
       const queryResult = await tx
         .update(privateMessage)
@@ -31,7 +31,12 @@ export const messageRepository = {
         .from(privateMessage)
         .orderBy(desc(privateMessage.sentAt))
         .limit(50)
-        .where(eq(privateMessage.conversationId, conversationId));
+        .where(
+          and(
+            eq(privateMessage.conversationId, conversationId),
+            lt(privateMessage.sentAt, new Date(date))
+          )
+        );
 
       const fromUser = await tx
         .select({
