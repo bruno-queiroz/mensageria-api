@@ -3,7 +3,7 @@ import { z } from "zod";
 export const GetMessageSchema = z.object({
   toUser: z.string().uuid(),
   fromUser: z.string().uuid(),
-  date: z.string(),
+  date: z.string().nullable(),
   mode: z.string(),
 });
 
