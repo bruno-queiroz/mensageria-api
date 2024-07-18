@@ -69,7 +69,7 @@ export const messageRepository = {
         .where(
           and(
             eq(privateMessage.conversationId, conversationId),
-            eq(privateMessage.isSeen, true)
+            eq(privateMessage.isSeen, false)
           )
         );
 
