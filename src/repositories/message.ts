@@ -66,6 +66,7 @@ export const messageRepository = {
         })
         .from(privateMessage)
         .orderBy(desc(privateMessage.sentAt))
+        .limit(1)
         .where(
           and(
             eq(privateMessage.conversationId, conversationId),
