@@ -9,5 +9,5 @@ export const getMessageService = async (data: GetMessageDto) => {
     return await messageRepository.get(conversationId, data.toUser, data.date);
   }
 
-  return await messageRepository.getNotSeen(conversationId, data.toUser);
+  return await messageRepository.getLastMessage(conversationId, data.toUser);
 };
